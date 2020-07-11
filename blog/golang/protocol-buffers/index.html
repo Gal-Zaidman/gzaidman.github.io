@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+  <meta charset="utf-8">
+  <title>Gal Zaidman, Personal blog</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="My personal blog">
+  <meta name="author" content="Gal Zaidman">
+  <meta name="generator" content="Hugo 0.72.0" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/bootstrap/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/slick/slick.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/themify-icons/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/venobox/venobox.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+
+</head><body>
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+<!-- navigation -->
+<header class="navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-white bg-transparent border-bottom pl-0">
+      <a class="navbar-brand mobile-view" href="https://examplesite.com"><img class="img-fluid"
+          src="https://examplesite.com/images/logo.png" alt="Gal Zaidman, Personal blog"></a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <div class="desktop-view">
+          <ul class="navbar-nav mr-auto">
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.facebook.com/gzaidman1"><i class="ti-facebook"></i></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/Gal-Zaidman"><i class="ti-github"></i></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.linkedin.com/in/galzaidman/"><i class="ti-linkedin"></i></a>
+            </li>
+            
+          </ul>
+        </div>
+
+        <a class="navbar-brand mx-auto desktop-view" href="https://examplesite.com"><img class="img-fluid"
+            src="https://examplesite.com/images/logo.png" alt="Gal Zaidman, Personal blog"></a>
+
+        <ul class="navbar-nav">
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://examplesite.com/about">About</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://examplesite.com/blog">Blog</a>
+          </li>
+          
+          
+        </ul>
+
+        
+        <!-- search -->
+        <div class="search pl-lg-4">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://examplesite.com/search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="Type & Hit Enter...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+<section class="section-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        
+        <h1></h1>
+        <h4></h4>
+        <div class="mb-3 post-meta">
+          <span>By Gal Zaidman</span>
+          
+          <span>,&nbsp;</span>
+          <span>01 January 0001</span>
+          
+        </div>
+        
+        <div class="content mb-5 pt-3">
+          <h1 id="protocol-buffers">Protocol Buffers</h1>
+<p>REST is a very common and widely used for end-user-facing APIs, but with the rise of microservices and the amount of communication between them network communication can be a bottleneck.
+The network bottleneck has become enough of an issue that companies that operate on a large scale, such as Google and Facebook, have innovated new technologies to speed up communication between microservices.</p>
+<h2 id="prerequisite">Prerequisite</h2>
+<ol>
+<li>
+<p>Install the compiler: <a href="https://developers.google.com/protocol-buffers/docs/downloads.html">https://developers.google.com/protocol-buffers/docs/downloads.html</a>.</p>
+</li>
+<li>
+<p>Install the Go protocol buffer plugin:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go get -u github.com/golang/protobuf/protoc-gen-go
+</code></pre></div></li>
+</ol>
+<h2 id="introduction-to-protocol-buffers">Introduction to protocol buffers</h2>
+<p>JSON and XML are commonly used to serialize data.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Definition:
+Serialization is the process of translating data structures or object state into a format that can be stored (for example, in a file or memory buffer) or transmitted (for example, across a network connection link) and reconstructed later.
+</code></pre></div><p>These formats are fairly easy to use and the transfer format is easy to read, but they’re not optimized for transport over a network or for serialization.
+Protocol buffers, by Google, are a popular choice for a high-speed transfer format. The data in the messages being transferred over the network is smaller than XML or JSON and it can be marshaled and unmarshaled faster than XML and JSON as well. The transfer method isn’t defined by protocol buffers. They can be transferred on a filesystem, using RPC, over HTTP, via a message queue, and numerous other ways.</p>
+<p>A protocol format is defined in a file. It contains the structure of the message and can be used to automatically generate the needed code.
+For example:
+user.proto.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">package</span> project
+
+message User {
+    required <span style="color:#00688b;font-weight:bold">string</span> name = <span style="color:#b452cd">1</span>;
+    required <span style="color:#00688b;font-weight:bold">int32</span> id = <span style="color:#b452cd">2</span>;
+    optional <span style="color:#00688b;font-weight:bold">string</span> email = <span style="color:#b452cd">3</span>;
+}
+</code></pre></div><ul>
+<li>The &lsquo;=1&rsquo; is a unique tag in the binary encoding.</li>
+<li>We need to specify whether a field is required or optional.</li>
+<li>Because the protocol buffer is used to generate Go code, it’s recommended that it have its own package. In this Go package, the protocol buffer file and generated code can reside.</li>
+</ul>
+<p>For more information on protocol bafflers definition we can look at the <a href="https://developers.google.com/protocol-buffers/docs/overview">DOCs</a>.</p>
+<p>To compile the protocol buffer to code, we need to generate the code (from the same directory as the .proto file):</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">protoc -I=. --go_out=. ./user.proto
+<span style="color:#228b22"># -I specifies the input source directory.</span>
+<span style="color:#228b22"># --go_out indicates where the generated Go source files will go.</span>
+<span style="color:#228b22"># ./user.proto is the name of the file to generate the source from.</span>
+</code></pre></div><p>After the generated code has been created, it can be used to pass messages between a client and server.</p>
+<p>For example:
+Server:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">import</span> (
+    <span style="color:#cd5555">&#34;net/http&#34;</span>
+    pb <span style="color:#cd5555">&#34;example/userpb&#34;</span>
+    <span style="color:#cd5555">&#34;github.com/golang/protobuf/proto&#34;</span>
+)
+
+<span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">main</span>() {
+    http.<span style="color:#008b45">HandleFunc</span>(<span style="color:#cd5555">&#34;/&#34;</span>, <span style="color:#8b008b;font-weight:bold">func</span>(res http.ResponseWriter, req *http.Request) {
+        ....
+        body, err := proto.<span style="color:#008b45">Marshal</span>(user)
+        ...
+        res.<span style="color:#008b45">Write</span>(body)
+    })
+    http.<span style="color:#008b45">ListenAndServe</span>(<span style="color:#cd5555">&#34;:8080&#34;</span>, <span style="color:#8b008b;font-weight:bold">nil</span>)
+}
+</code></pre></div><p>Client:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">res. err:= http.<span style="color:#008b45">Get</span>(<span style="color:#cd5555">&#34;http://localhost:8080&#34;</span>)
+<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+    os.<span style="color:#008b45">Exit</span>(<span style="color:#b452cd">1</span>)
+}
+<span style="color:#8b008b;font-weight:bold">defer</span> res.Body.<span style="color:#008b45">Close</span>()
+
+b, err := io.<span style="color:#008b45">ReadAll</span>(res.Body)
+<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+    os.<span style="color:#008b45">Exit</span>(<span style="color:#b452cd">1</span>)
+}
+<span style="color:#8b008b;font-weight:bold">var</span> user pb.User
+err = proto.<span style="color:#008b45">Unmarshal</span>(b, &amp;user)
+<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+    os.<span style="color:#008b45">Exit</span>(<span style="color:#b452cd">1</span>)
+}
+....
+</code></pre></div><p>For more information and examples go to the <a href="https://developers.google.com/protocol-buffers/docs/gotutorial">gotutorial</a></p>
+<h2 id="communicating-over-rpc-with-protocol-buffers">Communicating over RPC with protocol buffers</h2>
+<p>REST has certain semantics it enforces, which include a path and an HTTP verb, and are resource-based. At times, the semantics of REST aren’t desired.</p>
+<p>gRPC (<a href="http://www.grpc.io">www.grpc.io</a>) is an open source, high-performance RPC framework that can use HTTP/2 as a transport layer. It was developed at Google and has support many languages.
+gRPC uses code generation to create the messages and handle parts of the communication. This enables the communication to easily work between multiple languages, as the interfaces and messages are generated properly for each language. To define the messages and RPC calls, gRPC uses protocol buffers</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">syntax = <span style="color:#cd5555">&#34;proto3&#34;</span>
+
+<span style="color:#8b008b;font-weight:bold">package</span> example
+
+service Hello {
+    rpc <span style="color:#008b45">Say</span> (HelloRequest) <span style="color:#8b008b;font-weight:bold">return</span> (HelloResponse) {}
+}
+
+message HelloRequest {
+    <span style="color:#00688b;font-weight:bold">string</span> name = <span style="color:#b452cd">1</span>;
+}
+
+message HelloResponse {
+    <span style="color:#00688b;font-weight:bold">string</span> message= <span style="color:#b452cd">1</span>;
+}
+</code></pre></div><p>For more details on version 3 of protocol buffers, see <a href="https://developers.google.com/protocol-buffers/docs/proto3">Docs</a>.</p>
+<p>To generate the code we need to add &ndash;go_out=plugins=grpc:. to the protoc command:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">protoc -I=. --go_out=<span style="color:#00688b">plugins</span>=grpc:. ./hello.proto
+</code></pre></div><p>For example:
+Server:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">import</span> (
+    <span style="color:#cd5555">&#34;net&#34;</span>
+    <span style="color:#cd5555">&#34;context&#34;</span>
+
+    pb <span style="color:#cd5555">&#34;example/hellopb&#34;</span>
+    <span style="color:#cd5555">&#34;google.golang.org/grpc&#34;</span>
+)
+
+<span style="color:#8b008b;font-weight:bold">type</span> server <span style="color:#8b008b;font-weight:bold">struct</span>{}
+
+<span style="color:#8b008b;font-weight:bold">func</span> (s *server) <span style="color:#008b45">Say</span>(ctx context.Context, in pb.HelloRequest) (*pb.HelloResponse, <span style="color:#00688b;font-weight:bold">error</span>) {
+    m := <span style="color:#cd5555">&#34;Hello&#34;</span> + in.Name
+    <span style="color:#8b008b;font-weight:bold">return</span> &amp;pb.<span style="color:#008b45">HelloResponse</span>(Message: msg), <span style="color:#8b008b;font-weight:bold">nil</span>
+}
+
+<span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">main</span>() {
+    l, err := net.<span style="color:#008b45">Listen</span>(<span style="color:#cd5555">&#34;txp&#34;</span>, <span style="color:#cd5555">&#34;:55555&#34;</span>)
+    s := grpc.<span style="color:#008b45">NewServer</span>()
+    pb.<span style="color:#008b45">RegisterHelloServer</span>(s, &amp;server)
+    s.<span style="color:#008b45">Serve</span>(<span style="color:#b452cd">1</span>)
+}
+</code></pre></div><p>When the client and server are using HTTP/2, as they are by default when both ends are using gRPC, the communications use the connection reuse and multiplexing. This enables a fast, modern transport layer for transferring the protocol buffer binary messages.</p>
+<p>The advantages and disadvantages of RPC utilizing gRPC should be weighed before using them.</p>
+<p>The advantages:</p>
+<ul>
+<li>Using protocol buffers, the payload size is smaller and faster to marshal or unmarshal than JSON or XML.</li>
+<li>The context allows for canceling, communicating timeouts or due dates, and other relevant information over the course of a remote call.</li>
+<li>The interaction is with a called procedure rather than a message that’s passed elsewhere.</li>
+<li>Semantics of the transport methodology—for example, HTTP verbs—don’t limit the communications over RPC.</li>
+</ul>
+<p>The disadvantages:</p>
+<ul>
+<li>The transport payload isn’t human-readable as JSON or XML can be.</li>
+<li>Applications need to know the interface and details of the of the RPC calls. Knowing the semantics of the message isn’t enough.</li>
+<li>Integration is deeper than a message, such as you’d have with REST, because a remote procedure is being called. Exposing remote procedure access to untrusted clients may not be ideal and should be handled with care for security.</li>
+</ul>
+<p>In general, RPCs can be a good alternative for interactions between microservices you control that are part of a larger service. They can provide fast, efficient communication and will even work across multiple programming languages. RPCs shouldn’t typically be exposed to clients outside your control, such as a public API.</p>
+<h2 id="sources">Sources:</h2>
+<ul>
+<li>Go in Practice, Published by Manning Publications, 2016.</li>
+<li></li>
+</ul>
+
+        </div>
+
+        
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer>
+  <div class="container">
+    <div class="row">
+    
+      <div class="col-12 border-top py-4 text-center">
+        | copyright © 2020 <a href="https://themefisher.com">Themefisher</a> All Rights Reserved |
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  var indexURL = "https://examplesite.com/index.json"
+</script>
+<!-- JS Plugins -->
+
+<script src="https://examplesite.com/plugins/jQuery/jquery.min.js"></script>
+
+<script src="https://examplesite.com/plugins/bootstrap/bootstrap.min.js"></script>
+
+<script src="https://examplesite.com/plugins/slick/slick.min.js"></script>
+
+<script src="https://examplesite.com/plugins/venobox/venobox.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/fuse.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/mark.js"></script>
+
+<script src="https://examplesite.com/plugins/search/search.js"></script>
+
+<!-- Main Script -->
+
+<script src="https://examplesite.com/js/script.min.js"></script>
+<!-- google analitycs -->
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script></body>
+</html>

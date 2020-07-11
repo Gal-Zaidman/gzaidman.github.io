@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://examplesite.com/tags/ansible/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/categories/ansible/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/blog/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/categories/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/categories/full-course/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/tags/fullcourse/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/tags/gettingstarted/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/blog/ansible/1.-managing-hosts-with-ansible/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/tags/</loc>
+    <lastmod>2020-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/contact/</loc>
+    <lastmod>2019-10-29T13:49:23+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/search/</loc>
+    <lastmod>2019-10-29T13:49:23+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/about/</loc>
+    <lastmod>2019-07-11T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/blog/golang/creating-a-web-crawler-with-colly-learn-go-by-doing/</loc>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/blog/golang/json-marshal-and-unmarshal/</loc>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/blog/golang/learn-go-by-doing/</loc>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/blog/golang/protocol-buffers/</loc>
+  </url>
+  
+</urlset>

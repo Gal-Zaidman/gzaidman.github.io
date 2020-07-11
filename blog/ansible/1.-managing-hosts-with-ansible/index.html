@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+  <meta charset="utf-8">
+  <title>Gal Zaidman, Personal blog</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="We will cover how we control and manage hosts with ansible as well as basic host connection configuration">
+  <meta name="author" content="Gal Zaidman">
+  <meta name="generator" content="Hugo 0.72.0" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/bootstrap/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/slick/slick.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/themify-icons/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/venobox/venobox.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+
+</head><body>
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+<!-- navigation -->
+<header class="navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-white bg-transparent border-bottom pl-0">
+      <a class="navbar-brand mobile-view" href="https://examplesite.com"><img class="img-fluid"
+          src="https://examplesite.com/images/logo.png" alt="Gal Zaidman, Personal blog"></a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <div class="desktop-view">
+          <ul class="navbar-nav mr-auto">
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.facebook.com/gzaidman1"><i class="ti-facebook"></i></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/Gal-Zaidman"><i class="ti-github"></i></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.linkedin.com/in/galzaidman/"><i class="ti-linkedin"></i></a>
+            </li>
+            
+          </ul>
+        </div>
+
+        <a class="navbar-brand mx-auto desktop-view" href="https://examplesite.com"><img class="img-fluid"
+            src="https://examplesite.com/images/logo.png" alt="Gal Zaidman, Personal blog"></a>
+
+        <ul class="navbar-nav">
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://examplesite.com/about">About</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://examplesite.com/blog">Blog</a>
+          </li>
+          
+          
+        </ul>
+
+        
+        <!-- search -->
+        <div class="search pl-lg-4">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://examplesite.com/search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="Type & Hit Enter...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+<section class="section-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        
+        <h1>Managing Hosts With Ansible</h1>
+        <h4>Ansible zero to hero Part 1</h4>
+        <div class="mb-3 post-meta">
+          <span>By Gal Zaidman</span>
+          
+          <span>,&nbsp;</span>
+          <span>11 July 2020</span>
+          
+        </div>
+        
+        <a href="/tags/ansible"
+          class="text-primary pr-1">#Ansible</a>
+        
+        <a href="/tags/fullcourse"
+          class="text-primary pr-1">#Full course</a>
+        
+        <a href="/tags/gettingstarted"
+          class="text-primary pr-1">#Getting started</a>
+        
+        <div class="content mb-5 pt-3">
+          <p>When we use ansible we often need to manage remote hosts, those hosts can be bare-metals, VMs, instances running on different clouds and so on.
+Before we start writing playbooks and tasks (will be covered later) we need to understand what we infrastructure we have and how should we manage it, this will have affect on how our playbooks will be structured.
+In this blog post we will talk about the ansible inventory, which is a file that list the hosts we manage and see cover some configurations that are relevant to the way we talk to our hosts.</p>
+<h2 id="ansible-inventory"><strong>Ansible Inventory</strong></h2>
+<p>The ansible inventory is mostly a list of hosts that we want to manage with ansible.
+It allows us to easily group a number of hosts under the same name, and define variables for each host/group.</p>
+<p>In ansible there are 2 types of inventories:</p>
+<ul>
+<li>static: a regular file which can be written in INI or YAML format. This is the most common and simple inventory and will be the main focus of this blog.</li>
+<li>dynamic: an executable script which returns a generated static inventory that reflects the current state of the infrastructure. This is a more advance type of inventory which will be covered briefly.</li>
+</ul>
+<h3 id="inventory-structure"><strong>Inventory Structure</strong></h3>
+<p>The simplest inventory is just a file listing the hosts.
+For example this is a simple inventory that lists 5 hosts with their FQDN:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Bash" data-lang="Bash">host1.example.gzaidman.com  <span style="color:#228b22"># dev host</span>
+host2.example.gzaidman.com  <span style="color:#228b22"># test</span>
+host3.example.gzaidman.com  <span style="color:#228b22"># test</span>
+host4.example.gzaidman.com  <span style="color:#228b22"># prod</span>
+host5.example.gzaidman.com  <span style="color:#228b22"># prod</span>
+</code></pre></div><p>** We could also use plain IP addresses, but as a best practice it is recommended pto use FQDN or or IP addresses with aliases.</p>
+<p>The above could be shortened with ranges:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">host1.example.gzaidman.com      <span style="color:#228b22"># dev host</span>
+host[2:3].example.gzaidman.com  <span style="color:#228b22"># test</span>
+host[4:5].example.gzaidman.com  <span style="color:#228b22"># prod</span>
+</code></pre></div><p>When we run an ansible playbook with the above inventory, ansible will try to perform each task in the playbook on all the hosts in the inventory.</p>
+<p>Having a simple inventory with 5 hosts is not elegant but is manageable, but what if we have 50? 100? 1000?? as our infrastructure grows bigger and the system becomes more complex it is clear that we need a better way to organize our hosts, thats where inventory group come into play.</p>
+<p>Ansible inventory groups are used to assign a label to a collection of hosts.
+For example, we can use groups in the above example:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">[dev]
+host1.example.gzaidman.com
+
+[test]
+host[2:3].example.gzaidman.com
+
+[prod]
+host[4:5].example.gzaidman.com
+</code></pre></div><p>Groups a single host can be members of multiple groups and a group can contain child groups with the :children syntax.
+Lets say we want to also group the hosts by their location:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">[dev]
+host1.example.gzaidman.com
+
+[test]
+host[2:3].example.gzaidman.com
+
+[prod]
+host[4:5].example.gzaidman.com
+
+[england]
+host1.example.gzaidman.com
+host3.example.gzaidman.com
+
+[finland]
+host2.example.gzaidman.com
+host4.example.gzaidman.com
+
+[us]
+host5.example.gzaidman.com
+
+[europe:children]
+england
+finland
+</code></pre></div><p>In ansible there are two default groups that are always created:</p>
+<ul>
+<li>all: contains every host in the inventory.</li>
+<li>ungrouped: contains all hosts that don’t have another group aside from all.</li>
+</ul>
+<p>To verify that the inventory is ok, we can use:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#228b22"># ansible HOST/GROUP --list-hosts</span>
+ansible canada --list-hosts
+</code></pre></div><h3 id="adding-variables-to-managed-hosts"><strong>Adding variables to managed hosts</strong></h3>
+<p>Very often we will want to define variables which are specific to a host or a group of hosts.</p>
+<p>We can add the variables directly on each host</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#8b008b;font-weight:bold">[test]</span>
+<span style="color:#658b00">host1.example.gzaidman.com listen_port</span>=<span style="color:#cd5555">4321</span>
+<span style="color:#658b00">host2.example.gzaidman.com listen_port</span>=<span style="color:#cd5555">8642</span>
+</code></pre></div><p>We can also add variables for a group:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#8b008b;font-weight:bold">[test:vars]</span>
+<span style="color:#658b00">ntp_server</span>=<span style="color:#cd5555">ntp.canada.example.com</span>
+<span style="color:#658b00">ntp_port</span>=<span style="color:#cd5555">4567</span>
+<span style="color:#658b00">proxy</span>=<span style="color:#cd5555">proxy.canada.example.com</span>
+</code></pre></div><p>Those variables are called host and group variables and they will be available in the playbook on the host.
+Host and group variables are very common but defining them directly on the inventory file can make it very verbose and hard to read especially when we have a large inventory file.
+Ansible lets us organize host and group variables on separate files which will make our inventory cleaner and our project more maintainable.
+We need to create host_vars and group_vars directories, those directories can contain a file with the name of the host/group where we will define all the variables.
+For example we can take the inventory above, and create:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">[gzaidman:example] tree
+.
+├── group_vars
+│   └── <span style="color:#658b00">test</span>
+├── host_vars
+│   ├── host1.example.gzaidman.com
+│   └── host2.example.gzaidman.com
+└── inventory
+</code></pre></div><p>The variable files should be in yaml syntax only which is a bit different from the above.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">[gzaidman:example]<span style="color:#bbb"> </span>cat<span style="color:#bbb"> </span>test<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">ntp_server</span>:<span style="color:#bbb"> </span>ntp.canada.example.com<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">ntp_port</span>:<span style="color:#bbb"> </span><span style="color:#b452cd">4567</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">proxy</span>:<span style="color:#bbb"> </span>proxy.canada.example.com<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>[gzaidman:example]<span style="color:#bbb"> </span>cat<span style="color:#bbb"> </span>host1.example.gzaidman.com<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">listen_port</span>:<span style="color:#bbb"> </span><span style="color:#b452cd">4321</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>[gzaidman:example]<span style="color:#bbb"> </span>cat<span style="color:#bbb"> </span>host2.example.gzaidman.com<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">listen_port</span>:<span style="color:#bbb"> </span><span style="color:#b452cd">8642</span><span style="color:#bbb">
+</span></code></pre></div><p>You can also create directories named after your groups or hosts and place variable files in them. Ansible will read all the files in these directories in lexicographical order.
+An example with the &lsquo;test&rsquo; group:</p>
+<p>./example/group_vars/test/ntp_settings
+./example/group_vars/test/proxy_settings</p>
+<p>This can be very useful to keep your variables organized when a single file gets too big, or when you want to use Ansible Vault (covered later) on some group variables.</p>
+<h3 id="inventory-location">Inventory Location:</h3>
+<p>The inventory can be in the following locations (ordered by precedence):</p>
+<ol>
+<li>parameter: ansible/ansible-playbook &ndash;inventory PATHNAME or -i PATHNAME.</li>
+<li>Ansible configuration: with the inventory=INVENTORY_PATH.</li>
+<li>default location: /etc/ansible/host system&rsquo;s default static inventory file.</li>
+</ol>
+<h3 id="configurations">Configurations</h3>
+<p>There are a lot of flags we can set to control the way ansible connects to our hosts.
+We define does as inventory variables for a specific host/group. For the full list of configurations virsit the <a href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters">Docs</a>.</p>
+<p>Some of the most common ones are:</p>
+<ul>
+<li>ansible_connection: The why ansible will try to connect to the host. Bt default ansible executes playbooks over SSH with a connection type called smart, but there are others connection types:
+<ul>
+<li>SSH Based: paramiko, ssh</li>
+<li>Non-SSH based: local, docker</li>
+</ul>
+</li>
+<li>ansible_host: The name of the host to connect to, if different from the alias you wish to give to it.</li>
+<li>ansible_port: The connection port number, if not the default (22 for ssh).</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<p>To see examples on different inventories go to the docs on:</p>
+<p><a href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-setup-examples">https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-setup-examples</a></p>
+<h3 id="dynamic-inventory">Dynamic Inventory</h3>
+<p>When working with numerous machines or in an environment where machines come and go very quickly, it can be hard to keep the static inventory files up-to-date.
+Ansible supports dynamic inventory scripts that retrieve current information from external sources, allowing the inventory to be created in real time based on the current env.
+These scripts collect information from an external source and create JSON format inventory files.</p>
+<p>If the inventory file is executable, then it is treated as a dynamic inventory program and Ansible attempts to run it to generate the inventory. If the file is not executable, then it is treated as a static inventory.</p>
+<p>If a dynamic inventory script does not exist for the infrastructure in use, you can write a custom dynamic inventory program. This is a link to the ansible doc for writing a dynamic inventory <a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_inventory.html">link</a>.
+A few thing we should keep in mind:</p>
+<ul>
+<li>Can be written in any programming language, but must have an appropriate interpreter line (for example, #!/usr/bin/python).</li>
+<li>The script should return inventory information in JSON format.</li>
+<li>When passed the &ndash;list option, the script must print a JSON-encoded hash/dictionary of all the hosts and groups in the inventory.</li>
+<li>When passed the the &ndash;host HOST option, the script must print a JSON hash/dictionary consisting of variables which are associated with that host, or an empty JSON hash/dictionary.</li>
+</ul>
+<h2 id="configuring-ansible">Configuring Ansible</h2>
+<p>On each ansible project it is recommended to create a configuration file to override the default configurations based on the project requirements.
+Ansible configuration file is located at /etc/ansible/ansible.cfg, to override some settings we need to create an project configuration file at the project root directory with the same name ansible.cfg.
+The stock configuration should be sufficient for most project, and you can examine the /etc/ansible/ansible.cfg file to see the default configuration you can override.</p>
+<p>The Ansible configuration file consists of several sections, each section is inclosed with &lsquo;[SECTION_NAME]&rsquo;.</p>
+<p>We will talk about two sections that relate to the way ansible connects to hosts.</p>
+<p>Some configurations which relate to host management (they can als be overriden at the playbook level):</p>
+<p><strong>[defaults]</strong></p>
+<p>This is the first section in the file and it sets defaults for Ansible operation.</p>
+<ul>
+<li><strong>inventory</strong> - Specifies the path to the inventory file.</li>
+<li><strong>remote_user</strong> - specify a different remote user, by default it will try to log in with the user which ran the ansible command via SSH.</li>
+<li><strong>ask_pass</strong> - Whether or not to prompt for an SSH password. Can be false if using SSH public key authentication.</li>
+</ul>
+<p><strong>[privilege_escalation]</strong></p>
+<p>Configures how Ansible performs privilege escalation on managed hosts</p>
+<ul>
+<li><strong>become</strong> - Whether to automatically switch user on the managed host after connecting. This can also be specified by a play.</li>
+<li><strong>become_method</strong> - How to switch user (default is sudo).</li>
+<li><strong>become_user</strong> - The user to switch to on the managed host (default is root).</li>
+<li><strong>become_ask_pass</strong> - Whether to prompt for a password for your become_method. Defaults to false.</li>
+</ul>
+<p>We can see all the configuration options with the <strong>ansible-config list</strong> command.</p>
+<p>** It&rsquo;s important to understand that the above options on the default section refer to the initial connections meaning how to connect to the host and the options on the privilege_escalation refer to what to do once you are connected.</p>
+<h3 id="configuration-file-precedence">Configuration File Precedence</h3>
+<ol>
+<li>ANSIBLE_CONFIG environment variable</li>
+<li>./ansible.cfg</li>
+<li>~/ansible.cfg</li>
+<li>/etc/ansible/ansible.cfg</li>
+</ol>
+<p>The recommended practice is to create an ansible.cfg file in a directory from which you run Ansible commands (meaning option 2). We cab check which configuration file is being used with ansible &ndash;version.</p>
+
+        </div>
+
+        
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer>
+  <div class="container">
+    <div class="row">
+    
+      <div class="col-12 border-top py-4 text-center">
+        | copyright © 2020 <a href="https://themefisher.com">Themefisher</a> All Rights Reserved |
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  var indexURL = "https://examplesite.com/index.json"
+</script>
+<!-- JS Plugins -->
+
+<script src="https://examplesite.com/plugins/jQuery/jquery.min.js"></script>
+
+<script src="https://examplesite.com/plugins/bootstrap/bootstrap.min.js"></script>
+
+<script src="https://examplesite.com/plugins/slick/slick.min.js"></script>
+
+<script src="https://examplesite.com/plugins/venobox/venobox.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/fuse.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/mark.js"></script>
+
+<script src="https://examplesite.com/plugins/search/search.js"></script>
+
+<!-- Main Script -->
+
+<script src="https://examplesite.com/js/script.min.js"></script>
+<!-- google analitycs -->
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script></body>
+</html>

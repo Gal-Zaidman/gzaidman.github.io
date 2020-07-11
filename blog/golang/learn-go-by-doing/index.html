@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+  <meta charset="utf-8">
+  <title>Gal Zaidman, Personal blog</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="My personal blog">
+  <meta name="author" content="Gal Zaidman">
+  <meta name="generator" content="Hugo 0.72.0" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/bootstrap/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/slick/slick.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/themify-icons/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/venobox/venobox.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+
+</head><body>
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+<!-- navigation -->
+<header class="navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-white bg-transparent border-bottom pl-0">
+      <a class="navbar-brand mobile-view" href="https://examplesite.com"><img class="img-fluid"
+          src="https://examplesite.com/images/logo.png" alt="Gal Zaidman, Personal blog"></a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <div class="desktop-view">
+          <ul class="navbar-nav mr-auto">
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.facebook.com/gzaidman1"><i class="ti-facebook"></i></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/Gal-Zaidman"><i class="ti-github"></i></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.linkedin.com/in/galzaidman/"><i class="ti-linkedin"></i></a>
+            </li>
+            
+          </ul>
+        </div>
+
+        <a class="navbar-brand mx-auto desktop-view" href="https://examplesite.com"><img class="img-fluid"
+            src="https://examplesite.com/images/logo.png" alt="Gal Zaidman, Personal blog"></a>
+
+        <ul class="navbar-nav">
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://examplesite.com/about">About</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://examplesite.com/blog">Blog</a>
+          </li>
+          
+          
+        </ul>
+
+        
+        <!-- search -->
+        <div class="search pl-lg-4">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://examplesite.com/search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="Type & Hit Enter...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+<section class="section-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        
+        <h1></h1>
+        <h4></h4>
+        <div class="mb-3 post-meta">
+          <span>By Gal Zaidman</span>
+          
+          <span>,&nbsp;</span>
+          <span>01 January 0001</span>
+          
+        </div>
+        
+        <div class="content mb-5 pt-3">
+          <h1 id="creating-a-web-crawler-with-colly-learn-go-by-doing">Creating a Web Crawler with Colly, learn GO by doing</h1>
+<h2 id="before-we-start">Before we start</h2>
+<p>This tutorial was created while implementing a small project that required web crawling.
+It is composed from various descriptions, definitions and examples I saw on the links in the References section as well as my own experience while working on the project.</p>
+<h2 id="what-is-a-web-crawler">What is a web crawler?</h2>
+<p>Essentially, a web crawler is a tool that inspects the HTML of a givin web page and performs some type of actions based on that content. On the simple case (which is what we will implement in this tutorial)the web crawler start from a simple page, and while scanning that page it acquire more links to visit.
+Lets look at the following pseudo code to better understand the basics:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Queue = Queue()
+Queue.Add(initialURL)
+
+<span style="color:#8b008b;font-weight:bold">while</span> Queue <span style="color:#8b008b">is</span> <span style="color:#8b008b">not</span> empty:
+    URL = Queue.pop()
+    Page = Visit(URL)
+    Links = ExtractURLs(Page)
+    <span style="color:#8b008b;font-weight:bold">for</span> link <span style="color:#8b008b">in</span> Links:
+        Queue.Add(link)
+</code></pre></div><p>Usually when we think of writing wab crawlers the first language tha comes to mind is python, with its wide selection of frameworks and reach data processing abilities, however Golang has a very good rich ecosystem for web crawling as well that lets you utilize the efficiency of Golang.</p>
+<h2 id="colly---the-golang-web-crawling-framework">Colly - The golang web crawling framework</h2>
+<h3 id="introduction">Introduction</h3>
+<p>Colly is a Golang framework for building web scrapers. With Colly you can build web scrapers of various complexity, from simple scraper to complex asynchronous website crawlers processing millions of web pages. Colly is very much &ldquo;Batteries-Included&rdquo;, meaning you will get most the required features &ldquo;Out of the box&rdquo;.
+Colly has a rich API with features such as:</p>
+<ul>
+<li>Manages request delays and maximum concurrency per domain</li>
+<li>Automatic cookie and session handling</li>
+<li>Sync/async/parallel scraping</li>
+<li>Distributed scraping</li>
+<li>Caching</li>
+<li>Automatic encoding of non-unicode responses</li>
+</ul>
+<p>To install Colly we need to have Golang installed and run:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go get -u github.com/gocolly/colly/...
+</code></pre></div><p>Then in our go file we need to import it:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#cd5555">&#34;github.com/gocolly/colly&#34;</span>
+</code></pre></div><p>Latest info can be found in <a href="http://go-colly.org/docs/introduction/install/">colly installation guide</a></p>
+<h3 id="basic-components">Basic Components</h3>
+<h4 id="collector">Collector</h4>
+<p>Colly’s main entity is the <a href="https://pkg.go.dev/github.com/gocolly/colly/v2?tab=doc#Collector">Collector struct</a>. The Collector keep track of pages that are queued to visit, manages the network communication and responsible for the execution of the attached callbacks when a page is being scraped.</p>
+<p>To initialize a Collector we need to call the NewCollector function:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#228b22">// Create a collector with the default configuration
+</span><span style="color:#228b22"></span>c := colly.<span style="color:#008b45">NewCollector</span>()
+</code></pre></div><p>The NewCollector function definition is</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">NewCollector</span>(options ...CollectorOption) *Collector
+</code></pre></div><p>CollectorOption is a function which accepts a pointer to a Collector and configures it</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">type</span> CollectorOption <span style="color:#8b008b;font-weight:bold">func</span>(*Collector)
+</code></pre></div><p>We can basically configure each field in the Collector struct, for example here is a collector that is Asynchronous and will will only go to links on the starting page:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">c := colly.<span style="color:#008b45">NewCollector</span>(
+    <span style="color:#228b22">// MaxDepth is 2, so only the links on the scraped page
+</span><span style="color:#228b22"></span>    <span style="color:#228b22">// and links on those pages are visited
+</span><span style="color:#228b22"></span>    colly.<span style="color:#008b45">MaxDepth</span>(<span style="color:#b452cd">2</span>),
+    colly.<span style="color:#008b45">Async</span>(<span style="color:#8b008b;font-weight:bold">true</span>),
+)
+</code></pre></div><p>Important Notes:</p>
+<ul>
+<li>We can override our configuration at any point.</li>
+<li>We can use environment variables to configure our collector, this is useful if we don&rsquo;t want to recompile the program for customizing the collector, but we need to remember that every configuration that is defined in our program will override our environment variable.</li>
+</ul>
+<p>You can see the full list of CollectorOption functions in <a href="https://pkg.go.dev/github.com/gocolly/colly/v2?tab=doc#CollectorOption">colly goDocs</a> and for more detailed information about how we can configure the collector go the the <a href="http://go-colly.org/docs/introduction/configuration/">colly configuration docs</a></p>
+<h4 id="callbacks">Callbacks</h4>
+<p>Colly gives us a number of callbacks that we can setup. Those callbacks will be called on various stages in our crawling job and you will need to think which one do you want based on you requirements.
+Here is a list of all the callbacks and the order in which they will be called (taken from the colly website[1]):</p>
+<ol>
+<li>OnRequest(f RequestCallback) - Called before a request.</li>
+<li>OnError(f ErrorCallback) - Called if error occured during the request.</li>
+<li>OnResponse(f ResponseCallback) - Called after response received.</li>
+<li>OnHTML(goquerySelector string, f HTMLCallback) - Called right after OnResponse if the received content is HTML.</li>
+<li>OnXML(xpathQuery string, f XMLCallback) - Called right after OnHTML if the received content is HTML or XML.</li>
+<li>OnScraped(f ScrapedCallback) - Called after OnXML callbacks.</li>
+</ol>
+<p>Each of those callbacks receive a function which will be triggered when the callback is called.</p>
+<p>Now that we understand the basics of colly, lets dive into our project</p>
+<h3 id="our-project">Our project</h3>
+<h4 id="overview">Overview</h4>
+<p>So under the openshift organization we have various github repos. Merged PRs will trigger a release build. Whenever QE needs to verify a Bug which is resolved in a certain PR they need to manually look at when the PR was merged and then go to Openshift release page and find a release job which was triggered after the time the PR was merged, check its page and see that it contains a the PR and then they know that they can use the release for verification. We want to automate this task.</p>
+<p>We will build a small project that will use github golang library for checking when a PR was merged, and then crawl on the openshift release page and find the release which contain the PR.</p>
+<h4 id="logic">Logic</h4>
+<ol>
+<li>Retrieve the PR from the user.</li>
+<li>Validate that it is a github PR link.</li>
+<li>Find when the PR was merged.</li>
+<li>Find all the links to release pages on the openshift release.</li>
+<li>On each link search for the PR ID.</li>
+</ol>
+<h4 id="implementation">Implementation</h4>
+<p>So we will use:</p>
+<ul>
+<li>flags - for parsing our commend line args.</li>
+<li>regexp - to validate the pattern of a github repo.</li>
+<li>github api - to retrieve the PR data.</li>
+</ul>
+<p>Our main function will look like:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">main</span>() {
+	<span style="color:#8b008b;font-weight:bold">var</span> err <span style="color:#00688b;font-weight:bold">error</span>
+	debug := flag.<span style="color:#008b45">Bool</span>(<span style="color:#cd5555">&#34;debug&#34;</span>, <span style="color:#8b008b;font-weight:bold">false</span>, <span style="color:#cd5555">&#34;run with debug&#34;</span>)
+	flag.<span style="color:#008b45">Parse</span>()
+	url := flag.<span style="color:#008b45">Arg</span>(<span style="color:#b452cd">0</span>)
+	prd, err = *<span style="color:#008b45">createPullRequestData</span>(url)
+	<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+		<span style="color:#658b00">panic</span>(err)
+	}
+	<span style="color:#008b45">setupReleasePageCrawler</span>(*debug)
+	<span style="color:#008b45">setupReleaseStatusCrawler</span>(*debug)
+	releaseStatusCrawler.<span style="color:#008b45">Visit</span>(<span style="color:#cd5555">&#34;https://&#34;</span> + OPENSHIFT_RELEASE_DOMAIN)
+	releasePageCrawler.<span style="color:#008b45">Wait</span>()
+	fmt.<span style="color:#008b45">Println</span>(<span style="color:#cd5555">&#34;Done!&#34;</span>)
+}
+</code></pre></div><p>We get the URL from the user and also configure a flag for running in DEBUG mode.
+Then we get the PR details and configure our crawlers</p>
+<ul>
+<li>releaseStatusCrawler will be in charge of parsing the release domain and finding relevant release pages.</li>
+<li>releasePageCrawler will be in charge of finding the PR in the release page.</li>
+</ul>
+<p>And at the end we visit the release page, and call the Wait function on releasePageCrawler since it will run asynchronously.</p>
+<p>First of all, lets create a struct that will hold all of the data which we need for a PR.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#228b22">// PullRequestData holds all the data needed for a PR
+</span><span style="color:#228b22"></span><span style="color:#8b008b;font-weight:bold">type</span> PullRequestData <span style="color:#8b008b;font-weight:bold">struct</span> {
+	org   <span style="color:#00688b;font-weight:bold">string</span>
+	repo  <span style="color:#00688b;font-weight:bold">string</span>
+	id    <span style="color:#00688b;font-weight:bold">int</span>
+	mDate time.Time
+}
+</code></pre></div><p>Then write a the logic for getting a PR Url and creating a PullRequestData object.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#228b22">// Gets a PR URL and returns the organization, repo and ID of that PR.
+</span><span style="color:#228b22">// If the URL is not a valid PR url then returns an error
+</span><span style="color:#228b22"></span><span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">parsePrURL</span>(prURL <span style="color:#00688b;font-weight:bold">string</span>) (<span style="color:#00688b;font-weight:bold">string</span>, <span style="color:#00688b;font-weight:bold">string</span>, <span style="color:#00688b;font-weight:bold">int</span>, <span style="color:#00688b;font-weight:bold">error</span>) {
+	githubReg := regexp.<span style="color:#008b45">MustCompile</span>(<span style="color:#cd5555">`(https*:\/\/)?github\.com\/(.+\/){2}pull\/\d+`</span>)
+	<span style="color:#8b008b;font-weight:bold">if</span> !githubReg.<span style="color:#008b45">MatchString</span>(prURL) {
+		<span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#cd5555">&#34;&#34;</span>, <span style="color:#cd5555">&#34;&#34;</span>, <span style="color:#b452cd">0</span>, fmt.<span style="color:#008b45">Errorf</span>(<span style="color:#cd5555">&#34;error: PR URL is not a github PR URL, got url %v&#34;</span>, prURL)
+	}
+	u, err := url.<span style="color:#008b45">Parse</span>(prURL)
+	<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+		<span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#cd5555">&#34;&#34;</span>, <span style="color:#cd5555">&#34;&#34;</span>, <span style="color:#b452cd">0</span>, err
+	}
+	pArr := strings.<span style="color:#008b45">Split</span>(u.Path, <span style="color:#cd5555">&#34;/&#34;</span>)
+	id, err := strconv.<span style="color:#008b45">Atoi</span>(pArr[<span style="color:#b452cd">4</span>])
+	<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+		<span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#cd5555">&#34;&#34;</span>, <span style="color:#cd5555">&#34;&#34;</span>, <span style="color:#b452cd">0</span>, fmt.<span style="color:#008b45">Errorf</span>(<span style="color:#cd5555">&#34;error: expected PR URL with the form of github.com/ORG/REPO/pull/ID, but got %v&#34;</span>, prURL)
+	}
+	<span style="color:#8b008b;font-weight:bold">return</span> pArr[<span style="color:#b452cd">1</span>], pArr[<span style="color:#b452cd">2</span>], id, <span style="color:#8b008b;font-weight:bold">nil</span>
+}
+
+<span style="color:#228b22">// Creates a Github client using AccessToken if it exists or an un authenticated client
+</span><span style="color:#228b22">// if no AccessToken is available and retrieves the PR details from github
+</span><span style="color:#228b22"></span><span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">getGithubPr</span>(org <span style="color:#00688b;font-weight:bold">string</span>, repo <span style="color:#00688b;font-weight:bold">string</span>, id <span style="color:#00688b;font-weight:bold">int</span>) (*github.PullRequest, <span style="color:#00688b;font-weight:bold">error</span>) {
+	<span style="color:#8b008b;font-weight:bold">var</span> client *github.Client
+	ctx := context.<span style="color:#008b45">Background</span>()
+	accessToken := os.<span style="color:#008b45">Getenv</span>(<span style="color:#cd5555">&#34;AccessToken&#34;</span>)
+	<span style="color:#8b008b;font-weight:bold">if</span> accessToken == <span style="color:#cd5555">&#34;&#34;</span> {
+		client = github.<span style="color:#008b45">NewClient</span>(<span style="color:#8b008b;font-weight:bold">nil</span>)
+	} <span style="color:#8b008b;font-weight:bold">else</span> {
+		ts := oauth2.<span style="color:#008b45">StaticTokenSource</span>(
+			&amp;oauth2.Token{AccessToken: accessToken},
+		)
+		tc := oauth2.<span style="color:#008b45">NewClient</span>(ctx, ts)
+		client = github.<span style="color:#008b45">NewClient</span>(tc)
+	}
+	pr, _, err := client.PullRequests.<span style="color:#008b45">Get</span>(ctx, org, repo, id)
+	<span style="color:#8b008b;font-weight:bold">return</span> pr, err
+}
+
+<span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">createPullRequestData</span>(prURL <span style="color:#00688b;font-weight:bold">string</span>) (*PullRequestData, <span style="color:#00688b;font-weight:bold">error</span>) {
+	org, repo, id, err := <span style="color:#008b45">parsePrURL</span>(prURL)
+	<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+		<span style="color:#8b008b;font-weight:bold">return</span> PullRequestData{}, err
+	}
+	pr, err := <span style="color:#008b45">getGithubPr</span>(org, repo, id)
+	<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+		<span style="color:#8b008b;font-weight:bold">return</span> PullRequestData{}, err
+	}
+	<span style="color:#8b008b;font-weight:bold">return</span> &amp;PullRequestData{
+		org:   org,
+		repo:  repo,
+		id:    id,
+		mDate: pr.<span style="color:#008b45">GetMergedAt</span>(),
+	}, <span style="color:#8b008b;font-weight:bold">nil</span>
+}
+</code></pre></div><p>Here we get a PR URL, then call parsePrURL which validates that the URL is correct and returns the  organization, repository and id from the URL. After we retrieved the fields from the PR URL we call getGithubPr which creates a github client and uses github API for getting the PR details. Finally we return a pointer to a PullRequestData object.</p>
+<p>Now lets configure our first crawler, the release status crawler.
+The release status crawler works on one page only, the OCP release page which contains ~2000+ links.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">setupReleaseStatusCrawler</span>(debug <span style="color:#00688b;font-weight:bold">bool</span>) {
+	releaseStatusCrawler = colly.<span style="color:#008b45">NewCollector</span>(
+		colly.<span style="color:#008b45">AllowedDomains</span>(OPENSHIFT_RELEASE_DOMAIN),
+		colly.<span style="color:#008b45">MaxDepth</span>(<span style="color:#b452cd">1</span>),
+	)
+	<span style="color:#8b008b;font-weight:bold">if</span> debug == <span style="color:#8b008b;font-weight:bold">true</span> {
+		releaseStatusCrawler.<span style="color:#008b45">OnRequest</span>(<span style="color:#8b008b;font-weight:bold">func</span>(r *colly.Request) {
+			fmt.<span style="color:#008b45">Println</span>(<span style="color:#cd5555">&#34;Debug: release status crawler is visiting: &#34;</span>, r.URL.<span style="color:#008b45">String</span>())
+		})
+	}
+	releaseStatusCrawler.<span style="color:#008b45">OnHTML</span>(<span style="color:#cd5555">&#34;a[href]&#34;</span>, filterReleasesLinks)
+}
+</code></pre></div><p>Here we create a new crawler that can visit only ocp domain and set MaxDepth to 1 so it will stay only one first link.
+Then we will use the OnRequest callback to print the URL we are visiting in debug mod.
+Finally we use the OnHTML callback to set a function that will be called on each a[href] object.
+filterReleasesLinks is a function of type <a href="https://pkg.go.dev/github.com/gocolly/colly?tab=doc#HTMLCallback">HTMLCallback</a>.
+It gets the a[href] object and triggers the releasePageCrawler (which works on async mode) if that element fits the release regex and is created after the PR is merged.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">filterReleasesLinks</span>(e *colly.HTMLElement) {
+	reRelease := regexp.<span style="color:#008b45">MustCompile</span>(<span style="color:#cd5555">`\d\.\d\.\d-\d\.(nightly|ci)-\d{4}-\d{2}-\d{2}-\d{6}`</span>)
+	<span style="color:#8b008b;font-weight:bold">if</span> !reRelease.<span style="color:#008b45">MatchString</span>(e.Text) {
+		<span style="color:#8b008b;font-weight:bold">return</span>
+	}
+	d := strings.<span style="color:#008b45">SplitN</span>(e.Text, <span style="color:#cd5555">&#34;-&#34;</span>, <span style="color:#b452cd">3</span>)[<span style="color:#b452cd">2</span>]
+	d = strings.<span style="color:#008b45">Split</span>(d, <span style="color:#cd5555">&#34; &#34;</span>)[<span style="color:#b452cd">0</span>]
+	tr, err := time.<span style="color:#008b45">Parse</span>(PR_DATE_FORMAT, d)
+	<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+		fmt.<span style="color:#008b45">Printf</span>(<span style="color:#cd5555">&#34;Error time.Parse: &#34;</span>, err)
+	}
+	<span style="color:#228b22">// Check if the release is created after the PR is merged
+</span><span style="color:#228b22"></span>	<span style="color:#8b008b;font-weight:bold">if</span> tr.mDate.<span style="color:#008b45">After</span>(prd) {
+        link := e.<span style="color:#008b45">Attr</span>(<span style="color:#cd5555">&#34;href&#34;</span>)
+        releasePageCrawler.<span style="color:#008b45">Visit</span>(e.Request.<span style="color:#008b45">AbsoluteURL</span>(link))
+	}
+}
+</code></pre></div><p>Now lets configure our second crawler, the release page crawler.
+The release page crawler works on one page only, the release page which should contain a link the the given PR.
+The release page crawler will be triggered by the release status crawler when it finds a relevant link, so it needs to work on Async mode.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">setupReleasePageCrawler</span>(debug <span style="color:#00688b;font-weight:bold">bool</span>) {
+	releasePageCrawler = colly.<span style="color:#008b45">NewCollector</span>(
+		colly.<span style="color:#008b45">AllowedDomains</span>(OPENSHIFT_RELEASE_DOMAIN),
+		colly.<span style="color:#008b45">MaxDepth</span>(<span style="color:#b452cd">1</span>),
+		colly.<span style="color:#008b45">Async</span>(<span style="color:#8b008b;font-weight:bold">true</span>),
+	)
+	<span style="color:#228b22">//Set max Parallelism and introduce a Random Delay
+</span><span style="color:#228b22"></span>	releasePageCrawler.<span style="color:#008b45">Limit</span>(&amp;colly.LimitRule{
+		Parallelism: <span style="color:#b452cd">6</span>,
+		RandomDelay: <span style="color:#b452cd">1</span> * time.Second,
+	})
+	<span style="color:#8b008b;font-weight:bold">if</span> debug == <span style="color:#8b008b;font-weight:bold">true</span> {
+		releasePageCrawler.<span style="color:#008b45">OnRequest</span>(<span style="color:#8b008b;font-weight:bold">func</span>(r *colly.Request) {
+			fmt.<span style="color:#008b45">Println</span>(<span style="color:#cd5555">&#34;Debug: release page crawler is visiting: &#34;</span>, r.URL.<span style="color:#008b45">String</span>())
+		})
+	}
+	releasePageCrawler.<span style="color:#008b45">OnHTML</span>(<span style="color:#cd5555">&#34;a[href]&#34;</span>, findPR)
+}
+</code></pre></div><p>Here we create a new crawler that can visit only ocp domain ,set MaxDepth to 1 so it will stay only one first link and configure it to work in Async mode.
+The we set a limit to be a good citizen of the web, this is important because websites can block users that overload the site.
+Then we will use the OnRequest callback to print the URL we are visiting in debug mod.
+Finally we use the OnHTML callback to set a function that will be called on each a[href] object.
+findPR is also a <a href="https://pkg.go.dev/github.com/gocolly/colly?tab=doc#HTMLCallback">HTMLCallback</a> function.
+It gets the a[href] object and if it is a valid PR URL checks if it has the same ID as the given PR.
+If the IDs match we know that we found a release which contains our PR and we print it for the user.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#8b008b;font-weight:bold">func</span> <span style="color:#008b45">findPR</span>(e *colly.HTMLElement) {
+	link := e.<span style="color:#008b45">Attr</span>(<span style="color:#cd5555">&#34;href&#34;</span>)
+	_, _, id, err := <span style="color:#008b45">parsePrURL</span>(link)
+	<span style="color:#8b008b;font-weight:bold">if</span> err != <span style="color:#8b008b;font-weight:bold">nil</span> {
+		<span style="color:#8b008b;font-weight:bold">return</span>
+	}
+	<span style="color:#8b008b;font-weight:bold">if</span> prd.id == id {
+		fmt.<span style="color:#008b45">Println</span>(<span style="color:#cd5555">&#34;found release, link &#34;</span>, e.Request.URL.<span style="color:#008b45">String</span>())
+	}
+}
+</code></pre></div><p>The full code can be found on:</p>
+<h2 id="references">References:</h2>
+<p>[1] <a href="http://go-colly.org/">Colly web page and docs</a>
+[2] <a href="https://benjamincongdon.me/blog/2018/03/01/Scraping-the-Web-in-Golang-with-Colly-and-Goquery/">Scraping the Web in Golang with Colly and Goquery</a></p>
+
+        </div>
+
+        
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer>
+  <div class="container">
+    <div class="row">
+    
+      <div class="col-12 border-top py-4 text-center">
+        | copyright © 2020 <a href="https://themefisher.com">Themefisher</a> All Rights Reserved |
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  var indexURL = "https://examplesite.com/index.json"
+</script>
+<!-- JS Plugins -->
+
+<script src="https://examplesite.com/plugins/jQuery/jquery.min.js"></script>
+
+<script src="https://examplesite.com/plugins/bootstrap/bootstrap.min.js"></script>
+
+<script src="https://examplesite.com/plugins/slick/slick.min.js"></script>
+
+<script src="https://examplesite.com/plugins/venobox/venobox.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/fuse.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/mark.js"></script>
+
+<script src="https://examplesite.com/plugins/search/search.js"></script>
+
+<!-- Main Script -->
+
+<script src="https://examplesite.com/js/script.min.js"></script>
+<!-- google analitycs -->
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script></body>
+</html>

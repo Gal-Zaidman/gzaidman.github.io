@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gal Zaidman, Personal blog</title>
+    <link>https://examplesite.com/</link>
+    <description>Recent content on Gal Zaidman, Personal blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 11 Jul 2020 00:10:00 +0300</lastBuildDate>
+    
+	<atom:link href="https://examplesite.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Managing Hosts With Ansible</title>
+      <link>https://examplesite.com/blog/ansible/1.-managing-hosts-with-ansible/</link>
+      <pubDate>Sat, 11 Jul 2020 00:10:00 +0300</pubDate>
+      
+      <guid>https://examplesite.com/blog/ansible/1.-managing-hosts-with-ansible/</guid>
+      <description>When we use ansible we often need to manage remote hosts, those hosts can be bare-metals, VMs, instances running on different clouds and so on.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://examplesite.com/blog/golang/creating-a-web-crawler-with-colly-learn-go-by-doing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://examplesite.com/blog/golang/creating-a-web-crawler-with-colly-learn-go-by-doing/</guid>
+      <description>Creating a Web Crawler with Colly, learn GO by doing Before we start This tutorial was created while implementing a small project that required web crawling.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://examplesite.com/blog/golang/json-marshal-and-unmarshal/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://examplesite.com/blog/golang/json-marshal-and-unmarshal/</guid>
+      <description>JSON Marsheling and Unmarshaling Most of the communication that happens over REST involves passing data as JSON.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://examplesite.com/blog/golang/learn-go-by-doing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://examplesite.com/blog/golang/learn-go-by-doing/</guid>
+      <description>Creating a Web Crawler with Colly, learn GO by doing Before we start This tutorial was created while implementing a small project that required web crawling.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://examplesite.com/blog/golang/protocol-buffers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://examplesite.com/blog/golang/protocol-buffers/</guid>
+      <description>Protocol Buffers REST is a very common and widely used for end-user-facing APIs, but with the rise of microservices and the amount of communication between them network communication can be a bottleneck.</description>
+    </item>
+    
+  </channel>
+</rss>
